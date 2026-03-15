@@ -23,12 +23,17 @@ func main() {
 
 // getEvents returns all events currently stored in memory as a JSON array
 func getEvents(context *gin.Context) {
-	events := models.GetAllEvents()
+	events, err := models.GetAllEvents()
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch events. Try again later."})
+		return
+	}
+
 	context.JSON(http.StatusOK, events)
 }
 
 // createEvent parses a JSON request body into an Event and returns it.
-// TODO: assign a real ID and UserID (e.g. from auth), and call event.Save()
 func createEvent(context *gin.Context) {
 	var event models.Event
 	// ShouldBindJSON decodes the request body and enforces `binding:"required"` tags
@@ -43,7 +48,12 @@ func createEvent(context *gin.Context) {
 	event.ID = 1
 	event.UserID = 1
 
-	event.Save()
+	err = event.Save()
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not save events. Try again later."})
+		return
+	}
 
 	context.JSON(http.StatusCreated, gin.H{"message": "Event created!", "event": event})
 }
