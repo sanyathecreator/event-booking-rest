@@ -4,10 +4,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"sanyathecreator.com/eb-rest/db"
 	"sanyathecreator.com/eb-rest/models"
 )
 
 func main() {
+	db.InitDB()
+
 	// creates a router with Logger and Recovery middleware attached
 	server := gin.Default()
 
