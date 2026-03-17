@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"sanyathecreator.com/eb-rest/models"
+	"sanyathecreator.com/eb-rest/utils"
 )
 
 // getEvents returns all events currently stored in memory as a JSON array
@@ -40,9 +41,23 @@ func getEvent(context *gin.Context) {
 
 // createEvent parses a JSON request body into an Event and returns it.
 func createEvent(context *gin.Context) {
+	token := context.Request.Header.Get("Authorization")
+
+	if token == "" {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized."})
+		return
+	}
+
+	err := utils.VerifyToken(token)
+
+	if err != nil {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized."})
+		return
+	}
+
 	var event models.Event
 	// ShouldBindJSON decodes the request body and enforces `binding:"required"` tags
-	err := context.ShouldBindJSON(&event)
+	err = context.ShouldBindJSON(&event)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse request data."})
