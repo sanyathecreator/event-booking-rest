@@ -1,6 +1,8 @@
 package models
 
 import (
+	"errors"
+
 	"sanyathecreator.com/eb-rest/db"
 	"sanyathecreator.com/eb-rest/utils"
 )
@@ -36,4 +38,24 @@ func (u User) Save() error {
 	u.ID = userId
 
 	return err
+}
+
+func (u User) ValidateCredentials() error {
+	query := "SELECT password FROM users WHERE email = ?"
+	row := db.DB.QueryRow(query, u.Email)
+
+	var retreivedPassword string
+	err := row.Scan(&retreivedPassword)
+
+	if err != nil {
+		return err
+	}
+
+	passwordIsValid := utils.CheckPasswordHash(retreivedPassword, u.Password)
+
+	if !passwordIsValid {
+		return errors.New("Credentials invalid")
+	}
+
+	return nil
 }
