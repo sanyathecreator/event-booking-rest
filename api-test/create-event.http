@@ -2,7 +2,7 @@
 
 POST http://localhost:8080/events HTTP/1.1
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGV4YW1wbGUuY29tIiwiZXhwIjoxNzczNzc3MDM2LCJ1c2VySWQiOjB9.xe4uq1LDdyzc--4sgeNtuNNGYyW9ab5fWaUt2x_1hlA
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QzQGV4YW1wbGUuY29tIiwiZXhwIjoxNzczNzc4NDE2LCJ1c2VySWQiOjJ9.mp-TrtTZhEsOat1yzNskeIjR30B53LpSZ8mnUqTQ8tc
 
 {
   "dateTime": "2025-01-01T15:30:00.000Z",

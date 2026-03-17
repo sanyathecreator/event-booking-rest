@@ -14,13 +14,13 @@ type Event struct {
 	Description string    `binding:"required"`
 	Location    string    `binding:"required"`
 	DateTime    time.Time `binding:"required"`
-	UserID      int       // ID of the user who created the event
+	UserID      int64     // ID of the user who created the event
 }
 
 var events = []Event{}
 
 // Save appends the event to the in-memory slice.
-func (e Event) Save() error {
+func (e *Event) Save() error {
 	query := `
 	INSERT INTO events(name, description, location, dateTime, user_id)
 	VALUES (?, ?, ?, ?, ?)`
